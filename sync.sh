@@ -14,8 +14,9 @@ LOCAL_LIB="${LOCAL_LIB:-$HERE/library}"
 [ -d "$LOCAL_LIB" ] || { echo "no library at $LOCAL_LIB"; exit 1; }
 
 echo "syncing library -> $VPS_USER@$VPS_HOST:$VPS_DIR/library"
+ssh -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "mkdir -p '$VPS_DIR/library'"
 # --delete mirrors exactly (chapters removed locally are removed on vps)
-rsync -az --delete --info=stats1 \
+rsync -az --delete --stats \
   -e "ssh -p $VPS_PORT" \
   --exclude='.cache' \
   "$LOCAL_LIB/" "$VPS_USER@$VPS_HOST:$VPS_DIR/library/"

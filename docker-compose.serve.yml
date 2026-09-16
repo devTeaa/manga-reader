@@ -1,0 +1,13 @@
+# VPS serve-only: no OCR, no torch — just static file serving.
+# Usage (on the vps): sudo docker compose -f docker-compose.serve.yml up -d
+services:
+  manga:
+    image: python:3.11-alpine
+    container_name: manga-reader
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./library:/library:ro
+    working_dir: /library
+    command: python -m http.server 8080 --bind 0.0.0.0

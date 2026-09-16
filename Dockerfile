@@ -10,9 +10,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # mokuro first (resolves its own deps), then force a matched torch pair
-
-RUN pip install mokuro gallery-dl
-RUN pip install --no-deps torch==2.5.1 torchvision==0.20.1
+RUN pip install --default-timeout=120 --retries 10 mokuro gallery-dl
+# newest matched pair on top (overrides any downgrade mokuro's deps made)
+RUN pip install --no-deps --default-timeout=120 --retries 10 --upgrade torch torchvision
 
 WORKDIR /library
 VOLUME /library

@@ -13,6 +13,9 @@ LOCAL_LIB="${LOCAL_LIB:-$HERE/library}"
 
 [ -d "$LOCAL_LIB" ] || { echo "no library at $LOCAL_LIB"; exit 1; }
 
+# fit-to-screen patch on any new chapter html before pushing
+[ -x "$HERE/patch-html.sh" ] && "$HERE/patch-html.sh"
+
 echo "syncing library -> $VPS_USER@$VPS_HOST:$VPS_DIR/library"
 ssh -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "mkdir -p '$VPS_DIR/library'"
 # --delete mirrors exactly (chapters removed locally are removed on vps)

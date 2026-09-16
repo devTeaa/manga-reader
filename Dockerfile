@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libgl1 libglib2.0-0 curl \
     && rm -rf /var/lib/apt/lists/*
 
-# CPU-only torch first so we don't pull ~2GB CUDA wheels
-RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
+# mokuro first (resolves its own deps), then force a matched torch pair
 
 RUN pip install mokuro gallery-dl
+RUN pip install --no-deps torch==2.5.1 torchvision==0.20.1
 
 WORKDIR /library
 VOLUME /library
